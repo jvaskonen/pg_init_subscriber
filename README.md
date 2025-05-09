@@ -72,7 +72,8 @@ pg_init_subscriber.sh [<OPTIONS>]
     -?                             Get help
 ```
 # Setup
-For this script to function, the system where the script is being run must be able to connect to both the publisher and subscriber databases as the user running the script. This is most easily accomplished with a `.pgpass` entry. The subscriber node must also be able to connect to the publisher database as the database user. Either a `.pgpass` file can be set up on the subscriber node, or the credentials can be embedded in the subscription configuration using the `-w` flag.
+For this script to function, the system where the script is being run must be able to connect to both the publisher and subscriber databases as the user running the script. This is most easily accomplished with a `.pgpass` entry. The subscriber node must also be able to connect to the publisher database as the database user. Either a `.pgpass` file can be set up on the subscriber node, or the credentials can be embedded in the subscription configuration using the `-w` flag. The publisher node must also have `wal_level = logical` set in its `postgresql.conf`.
+
 # Examples
 ## Clone a database
 If all needed roles have already been created on the subscriber database, the schema can be cloned from the publisher and replication initated using the postgres user:
