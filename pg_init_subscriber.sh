@@ -427,19 +427,19 @@ then
     say "Importing the roles from Publisher database using pg_dumpall"
     if [ "$DUMP_OPTS" == "1" ]
     then
-        "${PG_BINPATH}pg_dumpall" -h $PUBLISHER_HOST -p $PUBLISHER_PORT     \
-            -U $PUBLISHER_USER -r --no-role-passwords                       \
-            | grep -ve '\(ALTER\|CREATE\) ROLE \(rds\|'$SUBSCRIBER_USER' \)'\
-            | grep -ve 'GRANT.*rds_superuser'                               \
-            | "${PG_BINPATH}psql" $SUBSCRIBER_HOST_ARG $SUBSCRIBER_PORT_ARG \
-            -U $SUBSCRIBER_USER -d $SUBSCRIBER_DB -X                        \
+        "${PG_BINPATH}pg_dumpall" -h $PUBLISHER_HOST -p $PUBLISHER_PORT             \
+            -U $PUBLISHER_USER -r --no-role-passwords                               \
+            | grep -ve '\(ALTER\|CREATE\) ROLE \(rds\|'["]?$SUBSCRIBER_USER["]?' \)'\
+            | grep -ve 'GRANT.*rds_superuser'                                       \
+            | "${PG_BINPATH}psql" $SUBSCRIBER_HOST_ARG $SUBSCRIBER_PORT_ARG         \
+            -U $SUBSCRIBER_USER -d $SUBSCRIBER_DB -X                                \
             || oops
     else
-        "${PG_BINPATH}pg_dumpall" -h $PUBLISHER_HOST -p $PUBLISHER_PORT     \
-            -U $PUBLISHER_USER -r                                           \
-            | grep -ve '\(ALTER\|CREATE\) ROLE '$SUBSCRIBER_USER' '         \
-            | "${PG_BINPATH}psql" $SUBSCRIBER_HOST_ARG $SUBSCRIBER_PORT_ARG \
-            -U $SUBSCRIBER_USER -d $SUBSCRIBER_DB -X                        \
+        "${PG_BINPATH}pg_dumpall" -h $PUBLISHER_HOST -p $PUBLISHER_PORT             \
+            -U $PUBLISHER_USER -r                                                   \
+            | grep -ve '\(ALTER\|CREATE\) ROLE ["]?'$SUBSCRIBER_USER'["]? '         \
+            | "${PG_BINPATH}psql" $SUBSCRIBER_HOST_ARG $SUBSCRIBER_PORT_ARG         \
+            -U $SUBSCRIBER_USER -d $SUBSCRIBER_DB -X                                \
             || oops
     fi
 fi
